@@ -147,15 +147,15 @@ app.post('/api/users/login', (req, res) => {
         if(err) return res.status(400).senc(err);
 
         // 토큰을 (쿠키, 로컬스토리지 등) 에 저장한다.
-        res.cookie("x_auth", user.token)
-        .status(200)
-        .json({loginSuccess: true, userId : user._id})
+        // res.cookie("x_auth", user.token)
+        res.status(200)
+        .json({loginSuccess: true, userId : user._id, "token": user.token})
       })
     })
   })
 })
 
-app.get('/api/users/auth', auth, (req, res) =>{
+app.post('/api/users/auth', auth, (req, res) =>{
   // 여기 까지 미들웨어를 통과해 왔다는 얘기는 Authentication이 True라는 말.
   res.status(200).json({
     _id: req.user._id,
@@ -170,7 +170,7 @@ app.get('/api/users/auth', auth, (req, res) =>{
 })
 
 // 로그 아웃
-app.get('/api/users/logout', auth, (req, res) => {
+app.post('/api/users/logout', auth, (req, res) => {
   User.findOneAndUpdate({_id: req.user._id},
     {token: ""}, (err, user) =>{
       if(err) return res.json({success: false, err})
