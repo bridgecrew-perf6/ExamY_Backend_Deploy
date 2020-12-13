@@ -149,7 +149,7 @@ app.post('/api/users/login', (req, res) => {
         // 토큰을 (쿠키, 로컬스토리지 등) 에 저장한다.
         // res.cookie("x_auth", user.token)
         res.status(200)
-        .json({loginSuccess: true, userId : user._id, "token": user.token})
+        .json({loginSuccess: true, user: user})
       })
     })
   })
