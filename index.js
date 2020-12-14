@@ -34,6 +34,16 @@ app.use(bodyParser.json())
 app.use(cookieParser());
 
 app.use('/static', express.static(__dirname + '/public'));
+var storage = multer.diskStorage({
+  destination: './public/uploads',
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}`);
+  },
+});
+var upload = multer({
+  storage: storage
+});
+
 const mongoose = require('mongoose') // mongoose 가져오기
 mongoose.connect(config.mongoURI, 
 {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
@@ -46,6 +56,11 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
+app.post("/api/users/upload", upload.single("profile_img"), function(req, res, next){
+  res.send({
+    filename: res.req.file.path
+  })
+})
 
 // post를 보내준다.
 app.post('/api/users/register', (req, res) => {
