@@ -1,4 +1,4 @@
-# ExamY
+# ExamY Backend Deploy
 
 ## 👋 ExamY 소개
 
